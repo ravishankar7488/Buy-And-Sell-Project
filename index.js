@@ -420,5 +420,8 @@ res.render("search.ejs",{user, products, searchedProduct, activePage:searchedPro
   }).catch((error)=>{console.log(error)})
 })
 
+app.use((req,res)=>{
+    Product.find({}).then((products)=>{res.render("homepage.ejs", {products , activePage:"Home"})}).catch((error)=>{console.log(error)})
+})
 //routes end
 app.listen(3000, ()=>{console.log("Server started at 3000");});
