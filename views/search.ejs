@@ -1,0 +1,26 @@
+<% layout("../layouts/boilerplate")%>
+<body>
+  <h2 style="text-align: center;">Search Results for: <i><b><%=searchedProduct%></b></i>..</h2><hr>
+  <div class="cards">
+    <%products.forEach((product)=>{%>
+
+<div class="card" style="width: 20rem; margin: 5px;">
+  <img src="<%=product.imageurl%>" class="card-img-top" alt="...">
+  <div class="card-body">
+    <h5 class="card-title"><%=product.title%></h5>
+    <p class="card-text"><i><%=product.tags%></i></p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">₹ <%=product.price.toLocaleString("en-IN")%></li>
+  </ul>
+  <div class="card-body">
+    <a href="/buyandsell/user/viewproduct/<%=product._id%>/<%=user._id%>"><button style="float: right; border-radius: 5px; height: 3rem; width: 8rem;">View Product</button></a>
+  </div>
+</div>
+  <%})%>
+  </div>
+
+</body>
+</html>
+
+

@@ -1,0 +1,67 @@
+<% layout("../layouts/boilerplate")%>
+<body>
+  <div class="card" style="width: 28rem;">
+    <img src="<%=product.imageurl%>" class="card-img-top" alt="Product Image">
+    <div class="card-body">
+    <h5 class="card-title"><%=product.title%></h5>
+    <p class="card-text">₹ <%=product.price.toLocaleString("en-IN")%></p>
+    <p class="card-text"><%=product.description%></p>
+    <p><i><%=product.tags%></i></p>
+
+    <% if (user.role === 'customer') { %>
+      <% if (product.stock<1) { %>
+        <a href="#" class="btn btn-primary" style="pointer-events: none; text-decoration: line-through; opacity: 0.6;  ">Out of Stock</a>
+      <% } %>
+      <% if (product.stock>0) { %>
+      <a href="/buyandsell/customer/buy/<%=product._id%>/<%=user._id%>" class="btn btn-primary">Buy</a>
+      <% } %>
+      <a href="/buyandsell/customer/addtocart/<%=product._id%>/<%=user._id%>" class="btn btn-primary">Add To Cart</a>
+    <% } %>
+
+     <% if (user.role === 'merchant') { %>
+      <a href="#" class="btn btn-primary" style="pointer-events: none; text-decoration: line-through; opacity: 0.6;  ">Buy</a>
+      <a href="#" class="btn btn-primary" style="pointer-events: none; text-decoration: line-through; opacity: 0.6;">Add To Cart</a>
+    <% } %>
+    
+  </div>
+</div>
+
+<hr><h5 style="text-align: center;">Comments</h5>
+<%if(user.role==='customer'){%>
+<div class="card">
+  <div class="card-body">
+    <form method="POST" action="/buyandsell/addcomment/<%=user._id%>/<%=product._id%>/<%=user.name%>" style="display: flex"><input name="comment" style="width: 100%; height: 60px; border-radius: 5px; border: 2px solid pink; font-size: 20px; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;" placeholder="&nbsp;Write a comment..">&nbsp;<button style="border-radius: 5px; border: 2px solid greenyellow; height: 60px;">Comment</button></form>
+  </div>
+</div><hr>
+<%}%>
+
+ <%reviews.forEach((review)=>{%>
+  <% if(review.reviewerId.toString() === user._id.toString()){ %><br>
+    <div class="card">
+  <h5 class="card-header"><%=review.createdAt%></h5>
+  <div class="card-body" style="background-color: #ebebeb;">
+    <h5 class="card-title"><%=review.reviewerName%></h5>
+    <p class="card-text"><%=review.comment%></p>
+    <div style="display: flex">
+      <!-- <a href="#" class="card-link"><button>Edit</button></a> &nbsp; -->
+      <form method="POST" action="/buyandsell/deletecomment/<%=user._id%>/<%=product._id%>/<%=review._id%>?_method=DELETE"><button>Delete</button></form>
+    </div>
+  </div>
+</div>
+<% } %>
+ <%})%>
+<br>
+
+ <%reviews.forEach((review)=>{%>
+  <%if(!(review.reviewerId.toString() === user._id.toString())){%><br>
+    <div class="card">
+  <h5 class="card-header"><%=review.createdAt%></h5>
+  <div class="card-body" style="background-color: #ebebeb;">
+    <h5 class="card-title"><%=review.reviewerName%></h5>
+    <p class="card-text"><%=review.comment%></p>
+  </div>
+</div>
+<%}%>
+ <%})%>
+
+</body>

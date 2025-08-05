@@ -1,0 +1,45 @@
+<% layout("../layouts/boilerplate")%>
+<body>
+<hr>
+  <h3>My Orders</h3><hr>
+  <div class="cards">
+    <%orders.forEach((order)=>{%>
+    <br><br>
+    <div class="card" style="width: 18rem; margin: 5px;">
+  <img src="<%=order.orderimage%>" class="card-img-top" alt="Product Image">
+  <div class="card-body">
+    <h5 class="card-title"><%=order.ordertitle%></h5>
+    <p class="card-text"></p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">₹ <%=order.amount.toLocaleString("en-IN")%></li>
+
+    <li class="list-group-item">Status: <span
+      style=<%if(order.status==='Order Placed'){%> "color:hotpink;"<%}%>
+                    <%if(order.status==='Packed' || order.status==='Confirmed'){%> "color:blue;"<%}%>
+                    <%if(order.status==='Shipped'){%> "color:orange;"<%}%>
+                    <%if(order.status==='Order Placed'){%> "color:pink;"<%}%>
+                    <%if(order.status==='Rejected'){%> "color:red;"<%}%>
+                    <%if(order.status==='Delivered'){%> "color:darkgreen;"<%}%>
+                    <%if(order.status==='Canceled By Customer'){%> "color:grey;"<%}%>
+      ><b><%=order.status%></b></span></li>
+
+
+    <li class="list-group-item"><%=order.createdAt%></li>
+  </ul>
+  <div class="card-body">
+    <a href="/buyandsell/user/viewproduct/<%=order.productId%>/<%=user._id%>" class="card-link"><button>view</button></a>
+    <%if(order.status==='Delivered' || order.status==='Rejected' || order.status==='Canceled By Customer'){ %> 
+      <a href="#" class="card-link" style="pointer-events: none; opacity: 0.4;  "><button style="background-color: rgb(230, 79, 79); border-radius: 5px; text-decoration: line-through;">Cancel Order</button></a>
+      <% } %>
+
+    <%if(!(order.status==='Delivered' || order.status==='Rejected' || order.status==='Canceled By Customer')){ %> 
+      <a href="/buyandsell/user/cancelorder/<%=order._id%>/<%=user._id%>" class="card-link"><button style="background-color: rgb(230, 79, 79); border-radius: 5px;">Cancel Order</button></a>
+    <% } %>
+
+    <!-- <a href="#" class="card-link">Another link</a> -->
+  </div>
+</div>
+  <%})%>
+  </div>
+</body>

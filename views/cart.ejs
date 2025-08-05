@@ -1,0 +1,25 @@
+<% layout("../layouts/boilerplate")%>
+<body>
+<hr>
+<h3>Your Cart</h3><hr>
+  <div class="cards">
+    <%products.forEach((product)=>{%>
+    <br><br>
+    <div class="card" style="width: 18rem;">
+  <img src="<%=product.productImage%>" class="card-img-top" alt="Product Image">
+  <div class="card-body">
+    <h5 class="card-title"><%=product.productName%></h5>
+    <p class="card-text"></p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"> ₹<%=product.productPrice.toLocaleString("en-IN")%></li>
+    <li class="list-group-item"><%=product.addedToCartAt%></li>
+  </ul>
+  <div class="card-body">
+      <a href="/buyandsell/user/viewproduct/<%=product. productId%>/<%=user._id%>" class="card-link"><button>View</button></a>
+      <a href="/buyandsell/user/deletecart/<%=product._id%>/<%=user._id%>" class="card-link"><button>Remove</button></a>
+  </div>
+</div>
+  <%})%>
+  </div>
+</body>

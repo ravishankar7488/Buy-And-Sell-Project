@@ -1,0 +1,61 @@
+<% layout("../layouts/boilerplate")%>
+<body><br>
+
+  <form method="POST" action="/buyandsell/updateprofile/<%=user._id%>" enctype="multipart/form-data" class="row g-3">
+<div class="card mb-3" style="max-width: 840px;">
+  <div class="row g-0">
+    <div class="col-md-4">
+      <label for="formFile" class="form-label"><img src="<%=user.profileImage%>" class="img-fluid rounded-start" alt="Profile Image"></label>
+      <input type="file" name="profileImage" id="formFile" class="form-control">
+      <p>&nbsp;&nbsp;<i>Choose file to update profile picture.</i></p>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        
+        <p><b>Note: </b><i>Modify Only the fields you want to update and enter your current password to make changes.</i></p>
+        <div class="col-md-8">
+          <input type="text" class="form-control" placeholder="Name.." name="fname" >
+        </div>
+
+         <div class="col-md-8">
+          <input type="text" class="form-control" placeholder="Email.." name="femail" >
+        </div>
+
+         <div class="col-md-8">
+          <input type="text" class="form-control" placeholder="Phone.." name="fphone" >
+        </div>
+
+         <div class="col-md-8">
+          <input type="text" class="form-control" placeholder="Landmark.." name="flandmark" >
+        </div>
+
+         <div class="col-md-8">
+          <input type="text" class="form-control" placeholder="State.." name="fstate" >
+        </div>
+
+        <div class="col-md-8">
+          <input type="text" class="form-control" placeholder="Zip code.." name="fpin" >
+        </div>
+
+         <div class="col-md-8">
+          <input type="text" class="form-control" placeholder="City.." name="fcity" >
+        </div>
+
+        <div class="col-md-8">
+          <input type="password" class="form-control" placeholder="Enter password to make changes.." name="foldpassword">
+        </div>
+
+        <div class="col-md-8">
+          <input type="password" class="form-control" placeholder="New Password (In case)" name="fnewpassword">
+        </div>
+
+        <!-- <h6 class="card-title"><i><%=user.email%></i></h6>
+        <h6 class="card-title"><%=user.contact.phone%></h6><hr>
+        <p class="card-title"><%=user.contact.address%> - <%=user.contact.pincode%>,</p>
+        <p class="card-title"><%=user.contact.city%> - <%=user.contact.state%></p> -->
+       </div>
+       </div>
+       </div> 
+       <Button class="save-button">Save</Button>
+</form>
+</body>

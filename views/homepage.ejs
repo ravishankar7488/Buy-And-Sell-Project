@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="/source-images/logo.png">
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+
+
+    .navbar{
+  height: 5rem;
+  background-color: white;
+}
+    .cards{
+  max-width: 100%;
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-top: 5px;
+}
+.login-form-control{
+  margin: 40px 20px;
+  margin-right : 20px;
+  max-width: 27rem;
+  height: 3rem;
+}
+.card-img, .card-img-bottom, .card-img-top{
+  width: 100%;
+  height: 425px;
+}
+    #content{
+      max-width:100%;
+      display:flex;
+    }
+    #products{
+      width: 75%;
+      margin-left:0px;
+      background-color: rgb(240, 240, 231);
+    }
+  .login-signup-buttons{
+    /* border: 5px solid rgb(32, 226, 32); */
+    border-radius: 5px;
+    display: flex;
+    position: absolute;
+    right: 20px;
+  }
+  .login-signup-buttons:hover{
+    background-color: rgb(32, 226, 32);
+    font: white;
+    transition: background-color 0.6s;
+  }
+    .banner {
+  width: 100%;        /* Makes the banner span the full width of the page */
+  height: auto;       /* Maintains the aspect ratio */
+  max-height: 400px;  /* Optional: limits banner height */
+  object-fit: stretch;  /* Ensures the image covers the space nicely */
+}
+    #main-div{
+      max-width: 30%;
+      margin: auto;
+      /* background-color: grey; */
+      margin-top: 50px;
+      border-radius: 10px;
+         padding:2rem;
+    }
+    #internal-div{
+      margin:auto
+    }
+    .loginform{
+      width:25%;
+      height: 30rem;
+      position: sticky;
+      top: 5 rem;
+      background-color:rgb(255, 255, 255);
+    }
+
+  @media (max-width: 600px) {
+
+  #content {
+    flex-direction: column;
+  }
+  .loginform {
+    width: 100%;
+    order: -1; /* Moves loginform above products */
+    margin-bottom: 20px;
+    position: static;
+    /* top: auto; */
+  }
+  #products {
+    width: 100%;
+  }
+}
+  </style>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B&S</title>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
+
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><img class="logo" src="/source-images/logo.png"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        &nbsp;&nbsp;<a class="nav-link" href="/buyandsell/login">Home</a>  
+
+          &nbsp;<a class="nav-link" href="/buyandsell/login">My Orders</a>&nbsp;
+          <a class="nav-link" href="/buyandsell/login">Cart</a>&nbsp;
+          <a class="nav-link" href="/buyandsell/login">List Product</a>&nbsp;
+          <a class="nav-link" href="/buyandsell/login">Profile</a>&nbsp;
+          <form method="POST" action="/buyandsell/login" class="d-flex" role="search" style="margin-right: 40px;">&nbsp;
+            <input name="searchedProduct" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+          <a class="nav-link" href="#">Men </a>
+          <a class="nav-link" href="#">&nbsp;Women &nbsp;</a>
+          <a class="nav-link" href="#">&nbsp;Kid &nbsp;</a>
+          <a class="nav-link" href="#">&nbsp;Lifestyle &nbsp;</a>
+          <a class="nav-link" href="#">&nbsp;Gadgets &nbsp;</a>
+          <a class="nav-link" href="#">&nbsp;Home-Appliances &nbsp;</a>
+          <a class="nav-link" href="#">&nbsp;Sports &nbsp;</a>
+
+          <div class="login-signup-buttons">
+            <a class="nav-link" href="/buyandsell/signup">Sign Up</a>
+          </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+
+  <header>
+    <img src="https://static.vecteezy.com/system/resources/previews/011/871/820/non_2x/online-shopping-on-phone-buy-sell-business-digital-web-banner-application-money-advertising-payment-ecommerce-illustration-search-vector.jpg" class="banner">
+  </header>
+
+  <div id="content">
+    <div id="products">
+      <div class="cards" >
+    <%products.forEach((product)=>{%>
+    <div class="card" style="width: 19rem; margin:10px">
+  <img src="<%=product.imageurl%>" class="card-img-top" alt="Product Image">
+  <div class="card-body">
+    <h5 class="card-title"><%=product.title%></h5>
+    <p class="card-text"> ₹ <%=product.price.toLocaleString("en-IN")%></p>
+    <p><i><%=product.tags%></i></p>
+    <a href="#" class="btn btn-primary">View Product</a>
+  </div>
+</div>
+  <%})%>
+  </div>
+    </div>
+    <div class="loginform" >
+      <form style="text-align: center;" method="POST" action="/buyandsell/login"><br><br>
+        <h3>Login</h3>
+        <input class="form-control login-form-control" type="text" placeholder="Email: " name="femail" >
+        <input class="form-control login-form-control" type="password" placeholder="Password":  name="fpassword">
+        <a href="#" style="margin-bottom: 20px; text-decoration: none;">Forgot Password?</a>
+          <div class="col-12" style="margin-top: 10px;">
+           <button type="submit" class="btn btn-primary">Login</button>&nbsp;&nbsp;
+            <a href="/buyandsell/signup" class="btn btn-primary">Sign Up</a>
+          </div>
+      </form>
+
+    </div>
+  </div>
+
+  <footer>
+  <hr>
+  <div class="f-info"> 
+    <div class="f-info-socials">
+      <i class="fa-brands fa-square-facebook"></i>
+      <i class="fa-brands fa-square-instagram"></i>
+      <i class="fa-brands fa-linkedin"></i>
+    </div>
+    <div class="f-info-brand">&copy;B&S Private Limited</div>
+    <div class="f-info-links">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </div>
+  </div>
+</footer>
+
+      
+</body>
+</html>
+
+<!-- <a href="/buyandsell/login" class="btn btn-primary stretched-link">Login</a>
+            <a href="/buyandsell/login" class="btn btn-primary stretched-link">Signup</a> -->

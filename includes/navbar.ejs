@@ -1,0 +1,65 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
+
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#"><img class="logo" src="/source-images/logo.png"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+      
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">&nbsp; &nbsp;
+        <a class="nav-link <%= (activePage === 'home') ? 'active' : '' %>" href="/buyandsell/home/<%=user._id%>">Home</a>  
+
+        <% if (user.role === 'merchant') { %>
+          <a class="nav-link <%= (activePage === 'newordersmerchant') ? 'active' : '' %>" href="/buyandsell/merchant/myorders/<%=user._id%>">New orders</a>&nbsp;
+          <a class="nav-link <%= (activePage === 'orderhistorymerchant') ? 'active' : '' %>" href="/buyandsell/merchant/myordershistory/<%=user._id%>">Orders History</a>&nbsp;
+          <a class="nav-link <%= (activePage === 'myproductsmerchant') ? 'active' : '' %>" href="/buyandsell/merchant/myproducts/<%=user._id%>">My Products</a>&nbsp;
+          <a class="nav-link <%= (activePage === 'addproductmerchant') ? 'active' : '' %>" aria-current="page" href="/buyandsell/merchant/addproduct/<%=user._id%>">List Product</a>&nbsp;&nbsp;
+
+          <form method="POST" action="/buyandsell/search/<%=user._id%>" class="d-flex" role="search" style="margin-right: 40px;">
+            <input name="searchedProduct" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+
+        <% } %>
+        
+        <% if (user.role === 'customer') { %>
+          <a class="nav-link <%= (activePage === 'myorderscustomer') ? 'active' : '' %>" href="/buyandsell/customer/myorders/<%=user._id%>">My Orders</a>
+          <a class="nav-link <%= (activePage === 'cart') ? 'active' : '' %>" href="/buyandsell/customer/getcart/<%=user._id%>">Cart </a>
+
+
+          <form method="POST" action="/buyandsell/search/<%=user._id%>" class="d-flex" role="search" style="margin-right: 40px;">
+            &nbsp;&nbsp;&nbsp;&nbsp;<input name="searchedProduct" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+            <button class="btn btn-outline-success" type="submit">Search</button>
+          </form>
+
+          
+
+
+        <% } %>
+
+          <div id="cat-in-nav" style="display: flex">
+            <a class="nav-link <%= (activePage === 'men') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/men">&nbsp;Men &nbsp;</a>
+            <a class="nav-link <%= (activePage === 'women') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/women">&nbsp;Women &nbsp;</a>
+            <a class="nav-link <%= (activePage === 'kid') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/kid">&nbsp;Kids&nbsp;</a>
+            <a class="nav-link <%= (activePage === 'lifestyle') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/lifestyle">&nbsp;Lifestyle &nbsp;</a>
+            <a class="nav-link <%= (activePage === 'gadget') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/gadget">&nbsp;Gadgets&nbsp;</a>
+            <a class="nav-link <%= (activePage === 'home appliance') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/home appliance">&nbsp;Home-Appliances&nbsp;</a>
+            <a class="nav-link <%= (activePage === 'sport') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/sports">Sports &nbsp;&nbsp;&nbsp;&nbsp;</a>
+          </div>
+
+            <div class="float-nav">
+            <%if(user.isRead){%>
+            <a class="nav-link <%= (activePage === 'notifications') ? 'active' : '' %>" href="/buyandsell/customer/getnotification/<%=user._id%>"><img style="position:relative; bottom:2px; margin-right: 14px; width: 40px; height: 40px;" src="https://banner2.cleanpng.com/20231206/oju/transparent-red-bell-black-surface-round-shape-open-hole-smoot-red-bell-with-open-hole-smooth-surface-1710985163124.webp"></a>
+            <%}%>
+            <%if(!(user.isRead)){%>
+            <a class="nav-link <%= (activePage === 'notifications') ? 'active' : '' %>" href="/buyandsell/customer/getnotification/<%=user._id%>"><img style="position:relative; bottom:10px; margin-right:10px; width: 50px; height: 50px;" src="https://png.pngtree.com/png-clipart/20220909/original/pngtree-red-ring-bell-notification-icon-png-image_8516685.png"></a>
+            <%}%>
+            <!-- <a class="nav-link" href="/buyandsell"><i class="fa-solid fa-right-from-bracket icons"></i></a> -->
+            <a class="nav-link <%= (activePage === 'account') ? 'active' : '' %>" href="/buyandsell/user/<%=user._id%>"><img style="margin-top: 0px; height: 35px; width: 35px; border-radius: 200px;" src="<%=user.profileImage%>"></a>
+          </div>
+
+      </div>
+    </div>
+  </div>
+</nav>

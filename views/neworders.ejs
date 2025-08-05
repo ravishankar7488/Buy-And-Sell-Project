@@ -1,0 +1,39 @@
+<% layout("../layouts/boilerplate")%>
+<body>
+<hr>
+
+<h3>Active Orders</h3><hr>
+  <div class="cards">
+    <%orders.forEach((order)=>{%>
+     <% if (!(order.status === 'Delivered' || order.status === 'Rejected' || order.status === 'Canceled By Customer')) { %>
+
+        <br><br>
+        <div class="card" style="width: 18rem;">
+          <img src="<%=order.orderimage%>" class="card-img-top" alt="Product Image">
+          <div class="card-body">
+            <h5 class="card-title"><%=order.ordertitle%></h5>
+            <p class="card-text"></p>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">₹ <%=order.amount.toLocaleString("en-IN")%></li>
+
+
+            <li class="list-group-item">Status: <span 
+             style= <%if(order.status==='Order Placed'){%> "color:hotpink;"<%}%>
+                    <%if(order.status==='Packed' || order.status==='Confirmed'){%> "color:blue;"<%}%>
+                    <%if(order.status==='Shipped'){%> "color:orange;"<%}%>
+              ><b><%=order.status%></b></span></li>
+
+
+            <li class="list-group-item"><%=order.createdAt%></li>
+          </ul>
+          <div class="card-body">
+            <a href="/buyandsell/merchant/vieworder/<%=order.customerId%>/<%=user._id%>/<%=order._id%>" class="card-link"><button>view</button></a>
+    <!-- <a href="#" class="card-link">Another link</a> -->
+          </div>
+        </div>
+
+      <% } %>
+  <%})%>
+  </div>
+</body>

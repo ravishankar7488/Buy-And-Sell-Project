@@ -1,0 +1,424 @@
+const express=require("express");
+const app=express();
+const method_override=require("method-override")
+app.use(method_override("_method"));
+app.use(express.urlencoded({extended:true}));
+
+const multer  = require('multer')
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    console.log(req.body)
+    if(file.fieldname==="profileImage"){cb(null, './public/uploads/profileImages')}
+    else{cb(null, './public/uploads/productImages')}
+  },
+  filename: function (req, file, cb) {
+    const fn=file.originalname;
+    cb(null, fn)
+  }
+})
+const upload = multer({ storage: storage })
+
+const mongoose = require('mongoose');//db setup
+main().then(()=>{
+  console.log("Connection with DB established");
+})
+.catch(err => console.log(err));
+
+async function main() {
+  await mongoose.connect('mongodb+srv://pravi5653no0987:Oc6IJ83zpYl2gVyi@cluster0.waryf2v.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
+  } 
+const User= require("./models/users.js")
+const Product= require("./models/products.js")
+const Order= require("./models/orders.js")
+const Cart= require("./models/carts.js")
+const Notification= require("./models/notifications.js")
+const Review= require("./models/reviews.js")
+
+const ejsMate= require("ejs-mate");
+app.engine("ejs", ejsMate);
+
+const path=require("path");
+app.set("views", path.join(__dirname, "views"));
+app.use(express.static(path.join(__dirname, "/public")));
+app.set("view engine", "ejs");
+
+
+
+//routes
+app.get("/buyandsell", (req,res)=>{
+  Product.find({}).then((products)=>{res.render("homepage.ejs", {products , activePage:"Home"})}).catch((error)=>{console.log(error)})
+  
+})
+//My account
+app.get("/buyandsell/user/:id", (req,res)=>{
+  let {id}=req.params;
+  User.findById(id).then((user)=>{res.render("myaccount.ejs", {user, activePage:"account"})}).catch((error)=>{res.send(error)})
+})
+//update account
+app.get("/buyandsell/updateprofile/:id", (req,res)=>{
+  let {id}=req.params;
+  User.findById(id).then((user)=>{res.render("updateaccount.ejs", {user, activePage:" "})}).catch((error)=>{console.log(error)})
+});
+app.post("/buyandsell/updateprofile/:id", upload.single('profileImage'), (req,res)=>{
+  let {id}=req.params;
+  let {fname, femail, fphone, flandmark, fpin, fstate, fcity, foldpassword, fnewpassword}= req.body;
+  User.findById(id).then((user)=>{
+    if(user.password !== foldpassword) {
+      return res.send("Old password is incorrect");
+    }
+    user.name = fname || user.name;
+    user.email = femail || user.email;
+    user.contact.phone = fphone || user.contact.phone;
+    user.contact.address = flandmark || user.contact.address;
+    user.contact.pincode = fpin || user.contact.pincode;
+    user.contact.state = fstate || user.contact.state;
+    user.contact.city = fcity || user.contact.city;
+    if(fnewpassword) {
+      user.password = fnewpassword; // Update password if new password is provided
+    }
+    if(req.file) {
+      user.profileImage = "/uploads/profileImages/" + req.file.originalname; // Update profile image if a new file is uploaded
+    }
+    
+    user.save().then((result)=>{res.redirect("/buyandsell/user/"+id,)}).catch((e)=>{    if (e.name === 'ValidationError') {
+      // Handle validation error
+      res.send(e.message);
+    } else {
+      // Handle other errors
+      res.send(e);
+    }})
+
+  }).catch((error)=>{console.log(error)})
+})
+
+//view product
+app.get("/buyandsell/user/viewproduct/:pid/:uid", (req,res)=>{
+  let {pid, uid}=req.params;
+  Product.findById(pid).then((product)=>{
+    User.findById(uid).then((user)=>{
+      Review.find({productId:pid}).sort({ createdAt: -1 }).then((reviews)=>{res.render("viewproduct.ejs", {user, product, reviews, activePage:" "})})}).catch((e)=>{})
+      .then((error)=>{console.log(error)})
+  }).then((error1)=>{console.log(error1)})
+})
+
+//comment
+// Add
+app.post("/buyandsell/addcomment/:uid/:pid/:uname", (req, res)=>{
+  
+  let {uid, pid, uname}=req.params;
+  let {comment}=req.body;
+  console.log(uid+" "+pid+" "+comment)
+  let review=new Review({
+    reviewerId:uid,
+    productId:pid,
+    comment:comment,
+    reviewerName:uname
+  });
+  review.save().then((result)=>{console.log(result);res.redirect(`/buyandsell/user/viewproduct/${pid}/${uid}`)}).catch((error)=>{console.log(error)})
+})
+//delete comment:
+app.delete(("/buyandsell/deletecomment/:uid/:pid/:rid"),(req,res)=>{
+  let {uid, pid, rid}=req.params
+  Review.findByIdAndDelete(rid).then((result)=>{console.log(result);res.redirect(`/buyandsell/user/viewproduct/${pid}/${uid}`)}).catch((error)=>{})
+})
+
+app.post("/buyandsell/login", (req,res)=>{
+  let {femail, fpassword}=req.body;
+
+  User.findOne({email:femail})
+  .then((result)=>{
+    if(!result){res.send("User Not Registered")}
+    else{
+      let pw=result.password;
+      if(pw===fpassword){res.redirect("/buyandsell/home/"+result._id)}
+    else{res.send("Password Mismatch");}
+  }
+})
+  .catch((error)=>{res.send(error);});
+}
+)
+//notification:
+app.get("/buyandsell/customer/getnotification/:uid", (req,res)=>{
+  let{uid}=req.params;
+  Notification.find({receiverId:uid}).sort({ createdAt: -1 }).then((notifications)=>{
+    User.findById(uid).then((user)=>{
+      User.findByIdAndUpdate(uid, {isRead:true}).then((u)=>{res.render("shownotifications.ejs", {notifications, user, activePage:"notifications"})}).catch((e)=>{console.log(e)})
+      
+    }).catch((error)=>{console.log(error)})
+  }).catch((err)=>{console.log(err)})
+})
+//delete Notification:
+app.get(("/buyandsell/deletenotification/:nid/:uid"), (req,res)=>{
+  let {nid, uid}=req.params;
+  Notification.findByIdAndDelete(nid).then((result)=>{res.redirect("/buyandsell/customer/getnotification/"+uid)}).catch((error)=>{})
+})
+
+//show home page
+app.get("/buyandsell/home/:who", (req,res)=>{
+ let {who}=req.params;
+ Product.find({}).sort({ createdAt: -1 }).then((products)=>{
+    User.findById(who).then((user)=>{
+      if(user.role==="customer") res.render("customer.ejs",{user, products, activePage:"home"})
+      else if(user.role==="merchant") res.render("merchant.ejs",{user, products, activePage:"home"})
+    }).then((error)=>{})
+ }).catch((error1)=>{})
+})
+
+//signup
+app.get("/buyandsell/signup", (req,res)=>{
+  res.render("signup.ejs", {activePage:" "});
+})
+app.post("/buyandsell/signup", upload.single('profileImage'), (req,res)=>{
+  let {fname, femail, fpassword, frole, fphone, faddress, fpincode, fstate, fcity, fgender}= req.body;
+  console.log(req.file)
+  let profileImage = req.file ? "/uploads/profileImages/"+req.file.originalname : "/uploads/profileImages/default-profile.png"; // Handle file upload
+  let user= new User({
+  profileImage: profileImage,
+  gender: fgender,
+  name:fname,
+  email: femail,
+  password: fpassword,
+  role: frole,
+  contact: {state: fstate, city: fcity, pincode: fpincode, phone: fphone, address: faddress},
+  created_at:new Date()
+});
+user.save().then((result)=>{
+  let notification= new Notification({
+    senderId: '68806542c7dad51e899c51a9',
+    receiverId: result._id,
+    message: `Welcome ${result.name}! You are successfully registered on BUY & SELL as a ${result.role} 🙏`
+  });
+  notification.save().then((r)=>{res.redirect("/buyandsell/home/"+result._id)})}).catch((e)=>{res.send(e.errmsg);console.log(e)})
+  
+  .catch((error)=>{console.log(error); res.send(error)})
+})
+
+//merchantPages:
+//add product:
+app.get("/buyandsell/merchant/addproduct/:id", (req,res)=>{
+ let{id}=req.params;
+ User.findById(id).then((user)=>{res.render("addproduct.ejs", {user, activePage:"addproductmerchant"})}).then((error)=>{console.log(error)})
+})
+app.post("/buyandsell/merchant/addproduct/:id", (req,res)=>{
+  let {id}=req.params;
+  let {ftitle, fimageurl, fdescription, fstock, fprice, ftags}=req.body;
+  const tagsArray = ftags.split(',').map(tag => tag.trim());
+  let product= new Product({
+  title: ftitle,
+  description: fdescription,
+  price: fprice,
+  imageurl: fimageurl,
+  stock: fstock,
+  createdAt:new Date(),
+  sellerId:id,
+  tags:tagsArray
+  });
+  product.save().then((result)=>{res.redirect("/buyandsell/home/"+id)}).catch((error)=>{res.send(error);})
+})
+//my orders merchant
+app.get("/buyandsell/merchant/myorders/:id", (req,res)=>{
+  let {id}= req.params
+  Product.find({sellerId: id}, '_id').then((array)=>{
+    Order.find({productId: { $in: array }}).then((orders)=>{User.findById(id).then((user)=>{res.render("neworders.ejs", {orders, user, activePage:"newordersmerchant"})}).catch((err)=>{console.log(err)})
+      }).catch((error)=>{console.log(error)})
+  })
+  .catch((error1)=>{console.log(error1)})
+})
+//orderhistory
+app.get("/buyandsell/merchant/myordershistory/:id", (req,res)=>{
+  let {id}= req.params
+  Product.find({sellerId: id}, '_id').then((array)=>{
+    Order.find({productId: { $in: array }}).sort({ createdAt: -1 }).then((orders)=>{User.findById(id).then((user)=>{res.render("merchantorderhistory.ejs", {orders, user, activePage:"orderhistorymerchant"})}).catch((err)=>{console.log(err)})
+      }).catch((error)=>{console.log(error)})
+  })
+  .catch((error1)=>{console.log(error1)})
+})
+
+app.get("/buyandsell/merchant/vieworder/:cid/:uid/:oid",(req,res)=>{
+  let {cid, uid, oid}=req.params
+  User.findById(cid).then((customer)=>{
+    Order.findById(oid).then((order)=>{
+      User.findById(uid).then((user)=>{
+        res.render("vieworder.ejs", {customer, order, user, activePage:" "})
+      })
+      .catch((error1)=>{console.log(error)})
+      
+    })
+  .catch((error)=>{console.log(error)})}).catch((err)=>{console.log(err)})
+})
+app.post("/buyandsell/merchant/vieworder/updatestatus/:uid/:oid/:cid", (req,res)=>{
+  let {uid, oid, cid}=req.params;
+  let {status}=req.body;
+  Order.findByIdAndUpdate(oid, {status: status,  createdAt: new Date()}).then((result)=>{
+    Order.findById(oid).then((order)=>{
+      if(status==='Rejected'){
+        Product.findById(order.productId).then((product)=>{
+          Product.findByIdAndUpdate(product._id, {stock:product.stock+1}).then((r1)=>{}).catch((e1)=>{})
+        }).catch((e)=>{})
+      }
+      let notification=new Notification({
+      senderId:uid,
+      receiverId:cid,
+      message:`Your Order for product "${order.ordertitle}" has been "${status}"`
+    })
+    notification.save().then((r)=>{
+      User.findByIdAndUpdate(cid, {isRead: false}).then((u)=>{
+        res.redirect("/buyandsell/merchant/myorders/"+uid)
+      }).catch((e)=>{})
+      })
+      .catch((e)=>{console.log(e)})
+    }).catch((error1)=>{console.log(error1)})
+    
+  }).catch((error)=>{console.log(error)})
+})
+//my listed products
+app.get("/buyandsell/merchant/myproducts/:uid", (req, res)=>{
+  let {uid}=req.params;
+  Product.find({ sellerId: uid}).then((products)=>{
+    User.findById(uid).then((user)=>{
+      res.render("merchantProducts.ejs", {user, products, activePage:"myproductsmerchant"})
+    }).catch((error)=>{console.log(error)})
+  }).catch((error1)=>{console.log(error1)})
+})
+//edit product
+//get form
+app.get("/buyandsell/merchant/edit/:pid/:uid", (req, res)=>{
+  let {uid, pid}= req.params;
+  User.findById(uid).then((user)=>{
+    Product.findById(pid).then((product)=>{
+      res.render("editform.ejs", {user, product, activePage:" "})
+    }).catch((error)=>{console.log(error)})
+    
+  }).catch((error1)=>{console.log(error1)})
+})
+//update
+app.post("/buyandsell/merchant/edit/:pid/:uid", (req, res)=>{
+  let {uid, pid}= req.params;
+  let {pprice, pstock, ptags}=req.body;
+  const tagsArray = ptags.split(',').map(tag => tag.trim());
+  Product.findOneAndUpdate({_id:pid}, {
+    stock: pstock,
+    price: pprice,
+    tags: tagsArray,
+  }).then((result)=>{res.send(result)}).catch((error)=>{res.send(error)})
+})
+
+
+//customers
+//my orders customer
+app.get("/buyandsell/customer/myorders/:uid", (req,res)=>{
+  let {uid}=req.params;
+  User.findById(uid).then((user)=>{Order.find({customerId: uid}).sort({ createdAt: -1 })
+  .then((orders)=>{res.render("orderhistory.ejs", {user, orders, activePage:"myorderscustomer"})})
+  .then((error)=>{console.log(error)})
+    })
+  .catch((error)=>{console.log(error)})
+})
+
+//buy
+app.get("/buyandsell/customer/buy/:pid/:uid", (req,res)=>{
+  let {uid, pid}= req.params;
+  Product.findById(pid).then((product)=>{
+    Product.updateOne({_id:pid}, {stock:product.stock-1}).then((result)=>{
+      let notification=new Notification({
+        senderId:uid,
+        receiverId:product.sellerId,
+        message:`You have an order for your product ${product.title}, Stock remains: ${product.stock-1}. Check your New orders section for more details.`
+      })
+      notification.save().then((r)=>{User.findByIdAndUpdate(product.sellerId, {isRead:false}).then((r)=>{}).catch((e)=>{})})
+      .catch((e)=>{})
+    }).catch((error)=>{console.log(error)})
+      let order= new Order({
+    customerId: uid,
+    amount: product.price,
+    ordertitle: product.title,
+    orderimage: product.imageurl,
+    productId: pid,
+  })
+ order.save().then(res.redirect("/buyandsell/customer/myorders/"+uid)).catch((error)=>{console.log(error)})
+  }).catch((error)=>{console.log(error)})
+})
+//cart
+app.get("/buyandsell/customer/addtocart/:pid/:uid", (req, res)=>{
+  let {pid, uid}=req.params;
+  Product.findById(pid).then((product)=>{
+    let cart= new Cart({
+      customerId: uid,
+      productId: pid,
+      productImage: product.imageurl,
+      productName: product.title,
+      productPrice: product.price
+    });
+    cart.save().then((result)=>{res.redirect("/buyandsell/customer/getcart/"+uid)}).catch((error)=>{console.log(error)})
+  }).catch((error1)=>{console.log(error1)})
+  
+})
+
+app.get("/buyandsell/customer/getcart/:uid", (req,res)=>{
+  let {uid}=req.params;
+  // res.send(uid);
+  Cart.find({customerId : uid}).sort({ addedToCartAt: -1 }).then((products)=>{
+    console.log(products);
+    User.findById(uid).then((user)=>{res.render("cart.ejs", {products, user, activePage:"cart"})})
+    .catch((error1)=>{console.log(error1)})
+  }).catch((error)=>{console.log(error)})
+})
+//delete from cart
+app.get("/buyandsell/user/deletecart/:pid/:uid", (req,res)=>{
+  let {pid, uid}= req.params;
+  Cart.findByIdAndDelete(pid).then((result)=>{
+    res.redirect("/buyandsell/customer/getcart/"+uid);
+  }).catch((error)=>{console.log(error)})
+})
+
+//cancel order:
+app.get("/buyandsell/user/cancelorder/:pid/:uid", (req,res)=>{
+  let {pid, uid}=req.params;
+  Order.findByIdAndUpdate(pid, {status: "Canceled By Customer"}).then((result)=>{
+    Order.findById(pid).then((order)=>{
+      prodId=order.productId;
+      Product.findById(prodId).then((product)=>{
+        Product.findByIdAndUpdate(prodId, {stock:product.stock+1}).then((r1)=>{}).catch((e1)=>{})
+        
+        let notification= new Notification({
+          senderId:uid,
+          receiverId: product.sellerId,
+          message: `Order for your product "${order.ordertitle}" has been canceled by Customer`
+        })
+        notification.save().then((r)=>{
+          User.findByIdAndUpdate(product.sellerId, {isRead: false}).then((u)=>{
+            res.redirect("/buyandsell/customer/myorders/"+uid);
+          }).catch((e)=>{})
+        }).catch((e)=>{})
+      }).catch((error2)=>{console.log(error2)})
+    }).catch((error1)=>{console.log(error1)})
+}).catch((error)=>{console.log(error)})
+})
+
+//search
+app.post("/buyandsell/search/:uid", (req, res)=>{
+  let {uid}= req.params;
+  let {searchedProduct}= req.body;
+  searchedProduct?res.redirect(`/buyandsell/search/${uid}/${searchedProduct}`):res.redirect(`/buyandsell/search/${uid}/men`);
+  
+})
+
+app.get("/buyandsell/search/:uid/:searchedProduct", (req,res)=>{
+  let {uid, searchedProduct}=req.params;
+
+  User.findById(uid).then((user)=>{
+    Product.find({
+  $or: [
+    { title: { $regex: searchedProduct, $options: 'i' } },
+    { tags: { $regex: searchedProduct, $options: 'i' } },
+    { description: { $regex: searchedProduct, $options: 'i' } }
+  ]
+}).then((products)=>{
+res.render("search.ejs",{user, products, searchedProduct, activePage:searchedProduct})
+}).catch((err)=>{console.log(err)})
+
+  }).catch((error)=>{console.log(error)})
+})
+
+//routes end
+app.listen(3000, ()=>{console.log("Server started at 3000");});

@@ -1,0 +1,50 @@
+<% layout("../layouts/boilerplate")%>
+<body>
+   <div class="card" style="width: 28rem; margin-left:38%; ">
+  <img src="<%=order.orderimage%>" class="card-img-top" alt="Product Image">
+  <div class="card-body">
+    <h5 class="card-title"><%=order.ordertitle%></h5>
+    <p class="card-text"></p>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item"><b>₹ </b><%=order.amount.toLocaleString("en-IN")%></li>
+    <li class="list-group-item">Current Status: <span 
+      style=<%if(order.status==='Order Placed'){%> "color:hotpink;"<%}%>
+                    <%if(order.status==='Packed' || order.status==='Confirmed'){%> "color:blue;"<%}%>
+                    <%if(order.status==='Shipped'){%> "color:orange;"<%}%>
+                    <%if(order.status==='Rejected'){%> "color:red;"<%}%>
+                    <%if(order.status==='Delivered'){%> "color:darkgreen;"<%}%>
+                    <%if(order.status==='Canceled By Customer'){%> "color:grey;"<%}%>
+      ><b><%=order.status%></b></span></li>
+
+       <li class="list-group-item">Status: 
+      <form method="POST" action="/buyandsell/merchant/vieworder/updatestatus/<%=user._id%>/<%=order._id%>/<%=customer._id%>">
+        <select name="status" placeholder="<%=order.status%>">
+          <option value="Order Placed">Order Placed</option>
+          <option value="Confirmed">Confirmed</option>
+          <option value="Packed">Packed</option>
+          <option value="Shipped">Shipped</option>
+          <option value="Delivered">Delivered</option>
+          <option value="Rejected">Rejected</option>
+          
+        </select>
+        <%if(!(order.status==='Delivered' || order.status==='Rejected' || order.status==='Canceled By Customer')){%>  <button>Update Status</button>  <%}%>
+        
+      </form></li>
+
+   
+
+    <li class="list-group-item"><b>Customer Name: </b><%=customer.name%></li>
+    <li class="list-group-item"><b>Delivery Address: </b><%=customer.contact.address%> <b><%=customer.contact.pincode%></b></li>
+    <li class="list-group-item"><b><%=customer.contact.city%></b>, <b><%=customer.contact.state%></b></li>
+
+    <li class="list-group-item"><b>Contact@ </b><%=customer.contact.phone%></li>
+    <li class="list-group-item"><%=order.createdAt%></li>
+
+  </ul>
+  <div class="card-body">
+    <!-- <a href="/buyandsell/merchant/vieworder/<%=order.customerId%>/<%=user._id%>/<%=order._id%>" class="card-link"><button>view</button></a> -->
+    <!-- <a href="#" class="card-link">Another link</a> -->
+  </div>
+</div>
+</body>

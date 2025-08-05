@@ -1,0 +1,42 @@
+<% layout("../layouts/boilerplate")%>
+<body><br>
+
+<div class="card mb-3" style="max-width: 840px; margin-left: 10px;">
+  <div class="row g-0">
+    <div class="col-md-4" style="border: 1px solid green;">
+      <img src="<%=user.profileImage%>" class="img-fluid rounded-start" alt="Profile Image">
+      <div style="margin-top: 5px; margin-left: 5px;">
+        <%if((user.role==="customer")){%>
+              <br><p style="font-family: Gill Sans;">At <b>Buy & Sell</b>, we believe our customers are at the heart of everything we do. We're incredibly grateful for your trust and continued support, and we're committed to providing you with an exceptional experience every step of the way. your satisfaction is our greatest reward. Thank you for being a part of our community!</p>
+
+        <%}%>
+        <%if(user.role==="merchant"){%>
+              <br><p style="font-family:Lucida Sans;">Dear <b>Merchants, </b>we extend our sincerest gratitude. You are the backbone of <b>Buy & Sell</b>, bringing a vibrant and diverse array of products to our platform. Your dedication to offering quality items and your trust in our service are what make this marketplace thrive. Thank you for choosing to grow your business with us and for enriching the shopping experience for all our customers. We are proud to partner with you!</p>
+
+        <%}%>
+      </div>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        
+        <a href="/buyandsell/updateprofile/<%=user._id%>"><svg class="edit-icon" xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+  <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325"/></svg></a>
+
+        <br><h2 style="color: blue; font-family: Gill Sans; text-align: center;" class="card-title"><%=user.name%></h2><br><hr>
+        <h6 class="card-title"><i><%=user.email%></i></h6>
+        <h6 class="card-title"></b>Account Type: "<%=user.role%>"</h6>
+        <h6 class="card-title"><i><%=user.gender%></i></h6>
+        <h6 class="card-title"><%=user.contact.phone%></h6><hr>
+        <p class="card-title"><%=user.contact.address%> - <%=user.contact.pincode%>,</p>
+        <p class="card-title"><%=user.contact.city%> - <%=user.contact.state%></p>
+        <hr>
+        <p class="card-title"><b>Joined At:</b>&nbsp;<%=user.joinedAt%></p>
+        <a style="float: right;bottom: 20px; margin-left: 20px; border-radius: 10px;" href="/buyandsell/" class="card-link"><button>Sign Out👋</button></a>
+
+        
+
+      </div>
+    </div>
+  </div>
+</div>
+</body>
