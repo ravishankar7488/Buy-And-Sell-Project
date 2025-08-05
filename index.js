@@ -419,6 +419,21 @@ res.render("search.ejs",{user, products, searchedProduct, activePage:searchedPro
 
   }).catch((error)=>{console.log(error)})
 })
+//forgot password
+app.get("/buyandsell/password_recovery", (req,res)=>{
+  res.render("password_recovery.ejs", {activePage:" "});})
+app.post("/buyandsell/password_recovery", (req,res)=>{
+
+  let {femail,fpassword,pname}=req.body;
+  User.findOne({email:femail}).then((user)=>{
+    if(!user){res.send("User Not Registered")}
+    else{
+      user.password=fpassword;
+      user.save().then((result)=>{res.redirect("/buyandsell/home/"+result._id)}).catch((e)=>{res.send(e.errmsg);console.log(e)})
+    }
+  }).catch((error)=>{console.log(error); res.send(error)})
+});
+
 
 app.use((req,res)=>{
     Product.find({}).then((products)=>{res.render("homepage.ejs", {products , activePage:"Home"})}).catch((error)=>{console.log(error)})

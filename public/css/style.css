@@ -1,3 +1,13 @@
+@media (max-width: 800px) {
+  .card {
+width: 28rem !important;
+ margin:auto !important;
+ margin-top: 10px !important;
+  }
+}
+.navbar, .navbar-collapse {
+  background-color: white !important;
+}
 .nav-link.active {
   color: #fff !important;
   background-color: #ff5722;

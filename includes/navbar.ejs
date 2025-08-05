@@ -8,29 +8,29 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">&nbsp; &nbsp;
-        <a class="nav-link <%= (activePage === 'home') ? 'active' : '' %>" href="/buyandsell/home/<%=user._id%>">Home</a>  
+        <a class="nav-link <%= (activePage === 'home') ? 'active' : '' %>" href="/buyandsell/home/<%=user._id%>">&nbsp;&nbsp;Home</a>  
 
         <% if (user.role === 'merchant') { %>
-          <a class="nav-link <%= (activePage === 'newordersmerchant') ? 'active' : '' %>" href="/buyandsell/merchant/myorders/<%=user._id%>">New orders</a>&nbsp;
-          <a class="nav-link <%= (activePage === 'orderhistorymerchant') ? 'active' : '' %>" href="/buyandsell/merchant/myordershistory/<%=user._id%>">Orders History</a>&nbsp;
-          <a class="nav-link <%= (activePage === 'myproductsmerchant') ? 'active' : '' %>" href="/buyandsell/merchant/myproducts/<%=user._id%>">My Products</a>&nbsp;
-          <a class="nav-link <%= (activePage === 'addproductmerchant') ? 'active' : '' %>" aria-current="page" href="/buyandsell/merchant/addproduct/<%=user._id%>">List Product</a>&nbsp;&nbsp;
+          <a class="nav-link <%= (activePage === 'newordersmerchant') ? 'active' : '' %>" href="/buyandsell/merchant/myorders/<%=user._id%>">&nbsp;&nbsp;New orders</a>&nbsp;
+          <a class="nav-link <%= (activePage === 'orderhistorymerchant') ? 'active' : '' %>" href="/buyandsell/merchant/myordershistory/<%=user._id%>">&nbsp;&nbsp;Orders History</a>&nbsp;
+          <a class="nav-link <%= (activePage === 'myproductsmerchant') ? 'active' : '' %>" href="/buyandsell/merchant/myproducts/<%=user._id%>">&nbsp;&nbsp;My Products</a>&nbsp;
+          <a class="nav-link <%= (activePage === 'addproductmerchant') ? 'active' : '' %>" aria-current="page" href="/buyandsell/merchant/addproduct/<%=user._id%>">&nbsp;&nbsp;List Product</a>&nbsp;&nbsp;
 
           <form method="POST" action="/buyandsell/search/<%=user._id%>" class="d-flex" role="search" style="margin-right: 40px;">
             <input name="searchedProduct" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <button class="btn btn-outline-success" type="submit">&nbsp;Search</button>
           </form>
 
         <% } %>
         
         <% if (user.role === 'customer') { %>
-          <a class="nav-link <%= (activePage === 'myorderscustomer') ? 'active' : '' %>" href="/buyandsell/customer/myorders/<%=user._id%>">My Orders</a>
-          <a class="nav-link <%= (activePage === 'cart') ? 'active' : '' %>" href="/buyandsell/customer/getcart/<%=user._id%>">Cart </a>
+          <a class="nav-link <%= (activePage === 'myorderscustomer') ? 'active' : '' %>" href="/buyandsell/customer/myorders/<%=user._id%>">&nbsp;&nbsp;My Orders</a>
+          <a class="nav-link <%= (activePage === 'cart') ? 'active' : '' %>" href="/buyandsell/customer/getcart/<%=user._id%>">&nbsp;&nbsp;Cart </a>
 
 
           <form method="POST" action="/buyandsell/search/<%=user._id%>" class="d-flex" role="search" style="margin-right: 40px;">
             &nbsp;&nbsp;&nbsp;&nbsp;<input name="searchedProduct" class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-            <button class="btn btn-outline-success" type="submit">Search</button>
+            <button class="btn btn-outline-success" type="submit">&nbsp;&nbsp;Search</button>
           </form>
 
           
@@ -39,13 +39,13 @@
         <% } %>
 
           <div id="cat-in-nav" style="display: flex">
-            <a class="nav-link <%= (activePage === 'men') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/men">&nbsp;Men &nbsp;</a>
-            <a class="nav-link <%= (activePage === 'women') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/women">&nbsp;Women &nbsp;</a>
-            <a class="nav-link <%= (activePage === 'kid') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/kid">&nbsp;Kids&nbsp;</a>
-            <a class="nav-link <%= (activePage === 'lifestyle') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/lifestyle">&nbsp;Lifestyle &nbsp;</a>
-            <a class="nav-link <%= (activePage === 'gadget') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/gadget">&nbsp;Gadgets&nbsp;</a>
-            <a class="nav-link <%= (activePage === 'home appliance') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/home appliance">&nbsp;Home-Appliances&nbsp;</a>
-            <a class="nav-link <%= (activePage === 'sport') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/sports">Sports &nbsp;&nbsp;&nbsp;&nbsp;</a>
+            <a class="nav-link <%= (activePage === 'men') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/men">&nbsp;&nbsp;&nbsp;Men &nbsp;</a>
+            <a class="nav-link <%= (activePage === 'women') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/women">&nbsp;&nbsp;Women &nbsp;</a>
+            <a class="nav-link <%= (activePage === 'kid') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/kid">&nbsp;&nbsp;Kids&nbsp;</a>
+            <a class="nav-link <%= (activePage === 'lifestyle') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/lifestyle">&nbsp;&nbsp;Lifestyle &nbsp;</a>
+            <a class="nav-link <%= (activePage === 'gadget') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/gadget">&nbsp;&nbsp;Gadgets&nbsp;</a>
+            <a class="nav-link <%= (activePage === 'home appliance') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/home appliance">&nbsp;&nbsp;Home&nbsp;</a>
+            <a class="nav-link <%= (activePage === 'sport') ? 'active' : '' %>" href="/buyandsell/search/<%=user._id%>/sports">&nbsp;Sports&nbsp;&nbsp;</a>
           </div>
 
             <div class="float-nav">
