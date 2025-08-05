@@ -45,7 +45,7 @@ app.set("view engine", "ejs");
 
 
 //routes
-app.get("/buyandsell", (req,res)=>{
+app.get("/", (req,res)=>{
   Product.find({}).then((products)=>{res.render("homepage.ejs", {products , activePage:"Home"})}).catch((error)=>{console.log(error)})
   
 })
