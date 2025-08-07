@@ -147,9 +147,10 @@
     <div class="card" style="width: 19rem; margin:10px">
   <img src="<%=product.imageurl%>" class="card-img-top" alt="Product Image">
   <div class="card-body">
-    <h5 class="card-title"><%=product.title%></h5>
-    <p class="card-text"> ₹ <%=product.price.toLocaleString("en-IN")%></p>
-    <p><i><%=product.tags%></i></p>
+    <h6 class="card-title"><span><%=product.brand%></span>&nbsp; |&nbsp; <%=product.purchase %></h6>
+    <p class="card-title"><%=product.title%></p>
+    <p class="card-text"><span><strong>₹ <%=(product.priceafterdiscount).toLocaleString("en-IN")%></strong></span> &nbsp; &nbsp;<span style="text-decoration: line-through; color: grey;">₹ <%=product.price.toLocaleString("en-IN")%></span></p>
+    <!-- <p><i><%=product.tags%></i></p> -->
     <a href="#" class="btn btn-primary">View Product</a>
   </div>
 </div>

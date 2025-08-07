@@ -4,17 +4,16 @@
   <div class="cards">
     <%products.forEach((product)=>{%>
 
-<div class="card" style="width: 20rem; margin: 5px;">
+<div class="card" style="width: 18rem; margin: 5px;">
   <img src="<%=product.imageurl%>" class="card-img-top" alt="...">
   <div class="card-body">
-    <h5 class="card-title"><%=product.title%></h5>
-    <p class="card-text"><i><%=product.tags%></i></p>
+    <h6 class="card-title"><span><%=product.brand%></span>&nbsp; |&nbsp; <%=product.purchase %></h6>
+     <p class="card-title"><%=product.title%></p>
+     <p class="card-text"><span><strong>₹ <%=(product.priceafterdiscount).toLocaleString("en-IN")%></strong></span> &nbsp; &nbsp;<span style="text-decoration: line-through; color: grey;">₹ <%=product.price.toLocaleString("en-IN")%></span></p>
   </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item">₹ <%=product.price.toLocaleString("en-IN")%></li>
-  </ul>
+  <hr>
   <div class="card-body">
-    <a href="/buyandsell/user/viewproduct/<%=product._id%>/<%=user._id%>"><button style="float: right; border-radius: 5px; height: 3rem; width: 8rem;">View Product</button></a>
+    <a href="/buyandsell/user/viewproduct/<%=product._id%>/<%=user._id%>"><button style="float: right; border-radius: 5px; height: 3rem; width: 8rem; margin-top: -10px;">View Product</button></a>
   </div>
 </div>
   <%})%>

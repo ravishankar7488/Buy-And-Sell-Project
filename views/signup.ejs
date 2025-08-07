@@ -3,7 +3,13 @@
 <head><link rel="stylesheet" href="/css/style.css">
     <link rel="icon" type="image/png" href="/source-images/logo.png">
   <style>
-    
+    .form-label{
+      color: white;
+    }
+    .req{
+      color: rgb(165, 5, 5);
+      font-size: 20px;
+    }
     .logo{
     height: 100px;
     width: 120px;
@@ -53,32 +59,34 @@
     <%- include("../includes/banner.ejs")%>
     
   <div id="icon"><img class="logo" src="/source-images/logo.png"><h3 style="color: rgb(19, 18, 18);">&nbsp;&nbsp;&nbsp;&nbsp;Buy & Sell</h3>
-    <h5 style="font-family: GILL Sans; color: rgb(10, 10, 10);">Welcome to Buy & Sell! We're thrilled to have you here. Our platform is designed to connect merchants and customers seamlessly. Merchants can effortlessly list their products, reaching a wider audience, while customers can easily browse and purchase a diverse range of items. Thanks for joining us!</h5><br>
+    <h5 style="font-family: 'Courier New', Courier, monospace; color: rgb(10, 10, 10);">Welcome to Buy & Sell! We're thrilled to have you here, Thanks for joining us!</h5><br>
   </div>
   <div id="main-div">
     
+<!-- Our platform is designed to connect merchants and customers seamlessly. Merchants can effortlessly list their products, reaching a wider audience, while customers can easily browse and purchase a diverse range of items. -->
+
     <form method="POST" action="/buyandsell/signup" enctype="multipart/form-data" class="row g-3">
   <div class="col-md-6">
-    <label for="inputEmail4" class="form-label">Name</label>
-    <input type="text" class="form-control" name="fname" >
+    <label for="inputEmail4" class="form-label">Name<span class="req">*</span></label>
+    <input type="text" class="form-control" placeholder="eg. Ravi" name="fname" >
   </div>
 
   <div class="mb-3">
-  <label for="formFile" class="form-label">Upload file</label>
+  <label for="formFile" class="form-label">Upload Profile Picture (optional)</label>
   <input class="form-control" type="file" name="profileImage" id="formFile">
   </div>
 
   <div class="col-md-6">
-    <label for="inputEmail4" class="form-label">Email</label>
-    <input type="email" class="form-control" placeholder="johndoe@email.com" name="femail" >
+    <label for="inputEmail4" class="form-label">Email<span class="req">*</span></label>
+    <input type="email" class="form-control" placeholder="eg. johndoe@email.com" name="femail" >
   </div>
   <div class="col-md-6">
-    <label for="inputPassword4" class="form-label">Password</label>
+    <label for="inputPassword4" class="form-label">Password<span class="req">*</span></label>
     <input type="password" class="form-control" name="fpassword" >
   </div>
 
   <div class="col-md-6">
-    <label for="inputState" class="form-label">State</label>
+    <label for="inputState" class="form-label">State<span class="req">*</span></label>
     <select name="fstate" id="inputState" class="form-select">
       <option value="Andhra Pradesh">Andhra Pradesh</option>
       <option value="Arunachal Pradesh">Arunachal Pradesh</option>
@@ -112,16 +120,16 @@
   </div>
 
   <div class="col-6">
-    <label for="inputAddress" class="form-label">Landmark/Locality</label>
-    <input type="text" class="form-control" placeholder="1234 Main St" name="faddress">
+    <label for="inputAddress" class="form-label">Landmark/Locality<span class="req">*</span></label>
+    <input type="text" class="form-control" placeholder="eg. 1234 Main St" name="faddress">
   </div>
 
   <div class="col-4">
-    <label for="inputCity" class="form-label">City</label>
+    <label for="inputCity" class="form-label">City<span class="req">*</span></label>
     <input type="text" class="form-control" placeholder="City Name" name="fcity">
   </div>
     <div class="col-md-2">
-    <label for="inputState" class="form-label">Gender</label>
+    <label for="inputState" class="form-label">Gender<span class="req">*</span></label>
     <select name="fgender" id="inputState" class="form-select">
       <option value="Male">Male</option>
       <option value="Female">Female</option>
@@ -130,18 +138,18 @@
   </div>
 
   <div class="col-md-6">
-    <label for="inputCity" class="form-label">Phone</label>
-    <input type="text" class="form-control" name="fphone">
+    <label for="inputCity" class="form-label">Phone<span class="req">*</span></label>
+    <input type="text" class="form-control" placeholder="1234567890" name="fphone">
   </div>
   <div class="col-md-4">
-    <label for="inputState" class="form-label">Account Type</label>
+    <label for="inputState" class="form-label">Account Type<span class="req">*</span></label>
     <select name="frole" id="inputState" class="form-select">
       <option value="customer">Customer</option>
       <option value="merchant">Merchant</option>
     </select>
   </div>
   <div class="col-md-2">
-    <label for="inputZip" class="form-label">Zip</label>
+    <label for="inputZip" class="form-label">Zip<span class="req">*</span></label>
     <input name="fpincode" type="text" class="form-control" id="inputZip">
   </div>
 

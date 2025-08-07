@@ -1,0 +1,46 @@
+<% layout("../layouts/boilerplate")%>
+
+<body>
+  <br>
+    <h4 style="text-align: center;">Order Confirmation</h4>
+  <p style="text-align: center;">Thank you for your order, <%=user.name%>! Please verify the order and shipping details:</p><br>
+  <div class="card" style="width: 26rem; margin: auto;">
+  <img src=<%=product.imageurl%> class="card-img-top" alt="Product Image">
+  <div class="card-body">
+    <h6 class="card-title">Brand: <span class="value"><%=product.brand%></span></h6>
+    <p><strong>Product:</strong> <span class="value"><%=product.title%></span></p><hr>
+    <p style="line-height: 11px;">MRP. <span class="value">₹<%=product.price%></span></p>
+    <p style="line-height: 11px;">Discount <span class="value" style="color: rgb(65, 211, 65);">- ₹<%=product.price-product.priceafterdiscount%></span></p><hr>
+
+    <p style="line-height: 11px;">Total Amount. <span class="value"><b>₹<%=product.priceafterdiscount%></b></span></p><hr>
+    <p style="line-height: 14px;"><strong><%=product.purchase%></strong>&nbsp; peoples have shown their trust to this product yet.</p><hr>
+    <h5 style="text-align: center; color: blue;">Shipping Details:</h5><hr>
+    <p style="line-height: 14px;">Deliver To: <span class="value"><%=user.name%></span></p>
+    <p style="line-height: 14px;">Locality/Landmark: <span class="value"><%=user.contact.address%></span></p>
+    <p style="line-height: 14px;">City-State:  <span class="value"><%=user.city%> <%=user.contact.city%> - <%=user.contact.state%></span></p>
+    <p style="line-height: 14px;">Pin: <span class="value"><%=user.city%> <b><%=user.contact.pincode%></b></span></p>
+    <p style="line-height: 14px;">Contact: : <span class="value"><%=user.city%> <%=user.contact.phone%></span></p>
+    <a href="/buyandsell/updateprofile/<%=user.id%>"><button class="order-update" style="width: 100%; border-radius: 5px; border: 2px solid rgb(129, 151, 223); height: 40px;">Update Shipping details</button></a><hr>
+    <h5 style="text-align: center; color: blue;">Payment</h5><hr>
+
+    <div class="form-check">
+  <input class="form-check-input" type="radio" name="radioDefault" id="radioDefault1" checked>
+  <label class="form-check-label" for="radioDefault1">
+    Cash on Delivery
+  </label>
+</div>
+<div class="form-check">
+  <input style="pointer-events: none;" class="form-check-input" type="radio" name="radioDefault" id="radioDefault2">
+  <label style="color: grey;"  class="form-check-label" for="radioDefault2">
+    UPI/Debit/Credit card
+  </label>
+</div>
+<br>
+<p><i>•We are only accepting cash on delivery for the orders at this point of time, Other payment options will be available soon.</i></p>
+<hr>
+
+    
+    <a href="/buyandsell/customer/buy/<%=product._id%>/<%=user._id%>"><button class="order-confirm" style="margin-top: 10px; width: 100%; border-radius: 5px; border: 2px solid greenyellow; height: 40px;">Place an order</button></a>
+  </div>
+</div>
+</body>

@@ -11,11 +11,13 @@
         <div class="card" style="width: 18rem;">
           <img src="<%=order.orderimage%>" class="card-img-top" alt="Product Image">
           <div class="card-body">
-            <h5 class="card-title"><%=order.ordertitle%></h5>
-            <p class="card-text"></p>
+            <h6 class="card-title"><span><%=order.orderbrand%></span></h6>
+            <p class="card-title"><%=order.ordertitle%></p>
+    
+        <p class="card-text"><span><strong>₹ <%=(order.orderdiscountedprice).toLocaleString("en-IN")%></strong></span> &nbsp; &nbsp;<span style="text-decoration: line-through; color: grey;">₹ <%=order.amount.toLocaleString("en-IN")%></span></p>
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">₹ <%=order.amount.toLocaleString("en-IN")%></li>
+          
 
 
             <li class="list-group-item">Status: <span 

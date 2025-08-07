@@ -2,8 +2,10 @@
 <body>
   <h3>List Your Product</h3>
   <form method="POST" action="/buyandsell/merchant/addproduct/<%=user._id%>">
+    <input name="fbrand" placeholder="Brand">
     <input name="ftitle" placeholder="Title">
-    <input name="fprice" placeholder="Price">
+    <input name="fprice" placeholder="MRP">
+    <input name="fdiscountedprice" placeholder="Price (optional)">
     <input name="fstock" placeholder="Stock">
     <input name="fimageurl" placeholder="Image URL">
     <input name="ftags" placeholder="Tags">

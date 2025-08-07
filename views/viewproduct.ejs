@@ -3,9 +3,12 @@
   <div class="card" style="width: 25rem;">
     <img src="<%=product.imageurl%>" class="card-img-top" alt="Product Image">
     <div class="card-body">
-    <h5 class="card-title"><%=product.title%></h5>
-    <p class="card-text">₹ <%=product.price.toLocaleString("en-IN")%></p>
+    <h5 class="card-title"><%=product.brand%></h5>
+    <p class="card-title"><%=product.title%></p>
+    <p class="card-text"><span><strong>₹ <%=(product.priceafterdiscount).toLocaleString("en-IN")%></strong></span> &nbsp; &nbsp;<span style="text-decoration: line-through; color: grey;">₹ <%=product.price.toLocaleString("en-IN")%></span></p>
+    <hr>
     <p class="card-text"><%=product.description%></p>
+    <hr>
     <p><i><%=product.tags%></i></p>
 
     <% if (user.role === 'customer') { %>
@@ -13,7 +16,8 @@
         <a href="#" class="btn btn-primary" style="pointer-events: none; text-decoration: line-through; opacity: 0.6;  ">Out of Stock</a>
       <% } %>
       <% if (product.stock>0) { %>
-      <a href="/buyandsell/customer/buy/<%=product._id%>/<%=user._id%>" class="btn btn-primary">Buy</a>
+      <!-- <a href="/buyandsell/customer/buy/<%=product._id%>/<%=user._id%>" class="btn btn-primary">Buy</a> -->
+      <a href="/buyandsell/customer/confirmation/buy/<%=product._id%>/<%=user._id%>" class="btn btn-primary">Buy</a>
       <% } %>
       <a href="/buyandsell/customer/addtocart/<%=product._id%>/<%=user._id%>" class="btn btn-primary">Add To Cart</a>
     <% } %>

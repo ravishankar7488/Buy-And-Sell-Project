@@ -1,13 +1,15 @@
+   
+        
 <% layout("../layouts/boilerplate")%>
 <body>
    <div class="card" style="width: 28rem; margin-left:38%; ">
   <img src="<%=order.orderimage%>" class="card-img-top" alt="Product Image">
   <div class="card-body">
-    <h5 class="card-title"><%=order.ordertitle%></h5>
+    <h6 class="card-title"><span><%=order.orderbrand%></span> <%=order.ordertitle%></h6>
     <p class="card-text"></p>
   </div>
   <ul class="list-group list-group-flush">
-    <li class="list-group-item"><b>₹ </b><%=order.amount.toLocaleString("en-IN")%></li>
+    <li class="list-group-item"><p class="card-text"><span><strong>₹ <%=(order.orderdiscountedprice).toLocaleString("en-IN")%></strong></span> &nbsp; &nbsp;<span style="text-decoration: line-through; color: grey;">₹ <%=order.amount.toLocaleString("en-IN")%></span></p></li>
     <li class="list-group-item">Current Status: <span 
       style=<%if(order.status==='Order Placed'){%> "color:hotpink;"<%}%>
                     <%if(order.status==='Packed' || order.status==='Confirmed'){%> "color:blue;"<%}%>

@@ -201,12 +201,14 @@ app.get("/buyandsell/merchant/addproduct/:id", (req,res)=>{
 })
 app.post("/buyandsell/merchant/addproduct/:id", (req,res)=>{
   let {id}=req.params;
-  let {ftitle, fimageurl, fdescription, fstock, fprice, ftags}=req.body;
+  let {fbrand, ftitle, fimageurl, fdescription, fstock, fprice, fdiscountedprice, ftags}=req.body;
   const tagsArray = ftags.split(',').map(tag => tag.trim());
   let product= new Product({
+  brand: fbrand,
   title: ftitle,
   description: fdescription,
   price: fprice,
+  priceafterdiscount: fdiscountedprice,
   imageurl: fimageurl,
   stock: fstock,
   createdAt:new Date(),
@@ -253,7 +255,7 @@ app.post("/buyandsell/merchant/vieworder/updatestatus/:uid/:oid/:cid", (req,res)
     Order.findById(oid).then((order)=>{
       if(status==='Rejected'){
         Product.findById(order.productId).then((product)=>{
-          Product.findByIdAndUpdate(product._id, {stock:product.stock+1}).then((r1)=>{}).catch((e1)=>{})
+          Product.findByIdAndUpdate(product._id, {stock:product.stock+1, purchase: product.purchase-1}).then((r1)=>{}).catch((e1)=>{})
         }).catch((e)=>{})
       }
       let notification=new Notification({
@@ -298,7 +300,7 @@ app.post("/buyandsell/merchant/edit/:pid/:uid", (req, res)=>{
   const tagsArray = ptags.split(',').map(tag => tag.trim());
   Product.findOneAndUpdate({_id:pid}, {
     stock: pstock,
-    price: pprice,
+    priceafterdiscount: pprice,
     tags: tagsArray,
   }).then((result)=>{res.send(result)}).catch((error)=>{res.send(error)})
 })
@@ -316,10 +318,19 @@ app.get("/buyandsell/customer/myorders/:uid", (req,res)=>{
 })
 
 //buy
+app.get("/buyandsell/customer/confirmation/buy/:pid/:uid", (req,res)=>{
+  let {pid, uid}= req.params;
+  Product.findById(pid).then((product)=>{
+    User.findById(uid).then((user)=>{
+      res.render("order_confirmation.ejs", {product, user, activePage:" "})
+    }).catch((error)=>{console.log(error)})
+  }).catch((error1)=>{console.log(error1)})
+})
+//buy and save order
 app.get("/buyandsell/customer/buy/:pid/:uid", (req,res)=>{
   let {uid, pid}= req.params;
   Product.findById(pid).then((product)=>{
-    Product.updateOne({_id:pid}, {stock:product.stock-1}).then((result)=>{
+    Product.updateOne({_id:pid}, {stock:product.stock-1, purchase: product.purchase+1}).then((result)=>{
       let notification=new Notification({
         senderId:uid,
         receiverId:product.sellerId,
@@ -333,6 +344,8 @@ app.get("/buyandsell/customer/buy/:pid/:uid", (req,res)=>{
     amount: product.price,
     ordertitle: product.title,
     orderimage: product.imageurl,
+    orderbrand: product.brand,
+    orderdiscountedprice: product.priceafterdiscount,
     productId: pid,
   })
  order.save().then(res.redirect("/buyandsell/customer/myorders/"+uid)).catch((error)=>{console.log(error)})
@@ -348,6 +361,9 @@ app.get("/buyandsell/customer/addtocart/:pid/:uid", (req, res)=>{
       productImage: product.imageurl,
       productName: product.title,
       productPrice: product.price
+      , discountedprice: product.priceafterdiscount,
+      brand: product.brand,
+      purchase: product.purchase
     });
     cart.save().then((result)=>{res.redirect("/buyandsell/customer/getcart/"+uid)}).catch((error)=>{console.log(error)})
   }).catch((error1)=>{console.log(error1)})
@@ -378,7 +394,7 @@ app.get("/buyandsell/user/cancelorder/:pid/:uid", (req,res)=>{
     Order.findById(pid).then((order)=>{
       prodId=order.productId;
       Product.findById(prodId).then((product)=>{
-        Product.findByIdAndUpdate(prodId, {stock:product.stock+1}).then((r1)=>{}).catch((e1)=>{})
+        Product.findByIdAndUpdate(prodId, {stock:product.stock+1, purchase: product.purchase-1}).then((r1)=>{}).catch((e1)=>{})
         
         let notification= new Notification({
           senderId:uid,

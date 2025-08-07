@@ -5,17 +5,15 @@
   <div class="cards">
     <%products.forEach((product)=>{%>
     <br><br>
-    <div class="card" style="width: 18rem;">
+    <div class="card" style="width: 18rem; margin: 10px;">
   <img src="<%=product.productImage%>" class="card-img-top" alt="Product Image">
   <div class="card-body">
-    <h5 class="card-title"><%=product.productName%></h5>
-    <p class="card-text"></p>
+     <h6 class="card-title"><span><%=product.brand%></span>&nbsp; |&nbsp; <%=product.purchase %></h6>
+    <p class="card-title"><%=product. productName%></p>
+    <p class="card-text"><span><strong>₹ <%=(product.discountedprice).toLocaleString("en-IN")%></strong></span> &nbsp; &nbsp;<span style="text-decoration: line-through; color: grey;">₹ <%=product.productPrice.toLocaleString("en-IN")%></span></p><hr>
   </div>
-  <ul class="list-group list-group-flush">
-    <li class="list-group-item"> ₹<%=product.productPrice.toLocaleString("en-IN")%></li>
-    <li class="list-group-item"><%=product.addedToCartAt%></li>
-  </ul>
-  <div class="card-body">
+
+  <div style="margin-top: -30px;" class="card-body">
       <a href="/buyandsell/user/viewproduct/<%=product. productId%>/<%=user._id%>" class="card-link"><button>View</button></a>
       <a href="/buyandsell/user/deletecart/<%=product._id%>/<%=user._id%>" class="card-link"><button>Remove</button></a>
   </div>
@@ -23,3 +21,4 @@
   <%})%>
   </div>
 </body>
+

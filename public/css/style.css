@@ -5,6 +5,21 @@ width: 24rem !important;
  margin-top: 10px !important;
   }
 }
+.order-confirm:hover {
+    background-color: #198754; /* Change to any color you want */
+    border-radius: 5px;
+    color: white;
+    transition: background-color 0.6s ease;
+  }
+  .order-update:hover {
+    background-color: #321ea7; /* Change to any color you want */
+    border-radius: 5px;
+    color: white;
+    transition: background-color 0.6s ease;
+  }
+.value{
+  float: right;
+}
 .navbar, .navbar-collapse {
   background-color: white !important;
 }
