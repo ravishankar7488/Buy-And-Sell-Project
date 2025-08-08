@@ -68,7 +68,7 @@
     <form method="POST" action="/buyandsell/signup" enctype="multipart/form-data" class="row g-3">
   <div class="col-md-6">
     <label for="inputEmail4" class="form-label">Name<span class="req">*</span></label>
-    <input type="text" class="form-control" placeholder="eg. Ravi" name="fname" >
+    <input type="text" class="form-control" placeholder="eg. Ravi" name="fname" required>
   </div>
 
   <div class="mb-3">
@@ -78,11 +78,12 @@
 
   <div class="col-md-6">
     <label for="inputEmail4" class="form-label">Email<span class="req">*</span></label>
-    <input type="email" class="form-control" placeholder="eg. johndoe@email.com" name="femail" >
+    <input style="color: grey;" type="email" class="form-control" name="femail" value="<%=email%>" readonly>
+    <!-- <input type="email"  placeholder="<%=email%>" name="femail" > -->
   </div>
   <div class="col-md-6">
     <label for="inputPassword4" class="form-label">Password<span class="req">*</span></label>
-    <input type="password" class="form-control" name="fpassword" >
+    <input type="password" class="form-control" name="fpassword" required>
   </div>
 
   <div class="col-md-6">
@@ -121,12 +122,12 @@
 
   <div class="col-6">
     <label for="inputAddress" class="form-label">Landmark/Locality<span class="req">*</span></label>
-    <input type="text" class="form-control" placeholder="eg. 1234 Main St" name="faddress">
+    <input type="text" class="form-control" placeholder="eg. 1234 Main St" name="faddress" required>
   </div>
 
   <div class="col-4">
     <label for="inputCity" class="form-label">City<span class="req">*</span></label>
-    <input type="text" class="form-control" placeholder="City Name" name="fcity">
+    <input type="text" class="form-control" placeholder="City Name" name="fcity" required>
   </div>
     <div class="col-md-2">
     <label for="inputState" class="form-label">Gender<span class="req">*</span></label>
@@ -139,7 +140,7 @@
 
   <div class="col-md-6">
     <label for="inputCity" class="form-label">Phone<span class="req">*</span></label>
-    <input type="text" class="form-control" placeholder="1234567890" name="fphone">
+    <input type="text" class="form-control" placeholder="1234567890" name="fphone" required pattern="[0-9]{10}">
   </div>
   <div class="col-md-4">
     <label for="inputState" class="form-label">Account Type<span class="req">*</span></label>
@@ -149,8 +150,8 @@
     </select>
   </div>
   <div class="col-md-2">
-    <label for="inputZip" class="form-label">Zip<span class="req">*</span></label>
-    <input name="fpincode" type="text" class="form-control" id="inputZip">
+    <label for="inputZip" class="form-label">Zip<span class="req">*</span> (6 digits)</label>
+    <input name="fpincode" type="text" class="form-control" id="inputZip" required pattern="[0-9]{6}">
   </div>
 
   <div class="col-12">

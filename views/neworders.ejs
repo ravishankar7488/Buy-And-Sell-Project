@@ -17,8 +17,6 @@
         <p class="card-text"><span><strong>₹ <%=(order.orderdiscountedprice).toLocaleString("en-IN")%></strong></span> &nbsp; &nbsp;<span style="text-decoration: line-through; color: grey;">₹ <%=order.amount.toLocaleString("en-IN")%></span></p>
           </div>
           <ul class="list-group list-group-flush">
-          
-
 
             <li class="list-group-item">Status: <span 
              style= <%if(order.status==='Order Placed'){%> "color:hotpink;"<%}%>

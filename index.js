@@ -4,6 +4,23 @@ const method_override=require("method-override")
 app.use(method_override("_method"));
 app.use(express.urlencoded({extended:true}));
 
+const bodyParser = require('body-parser');
+const nodemailer = require('nodemailer');
+const session = require('express-session');
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({ secret: 'otp_secret', resave: false, saveUninitialized: true }));
+
+// Email transporter setup (use your Gmail credentials or app password)
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'buyandsell7488@gmail.com',
+    pass: 'dfun dmeh qnnj tgog'
+  }
+});
+
+
 const multer  = require('multer')
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -165,8 +182,53 @@ app.get("/buyandsell/home/:who", (req,res)=>{
 })
 
 //signup
-app.get("/buyandsell/signup", (req,res)=>{
-  res.render("signup.ejs", {activePage:" "});
+// Handle email submission
+app.post('/send-otp', (req, res) => {
+  console.log(req.body);
+
+  const email = req.body.email;
+  const otp = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+
+  req.session.email = email;
+  req.session.otp = otp;
+
+  const mailOptions = {
+    from: 'buyandsell7488@gmail.com',
+    to: email,
+    subject: 'Verification OTP for B&S',
+    text: `Thank you for choosing Buy and Sell!
+Your One-Time Password (OTP) is ${otp}. Please enter this code to verify your identity and proceed.
+This code will expire in 5 minutes.
+If you didn’t request this, kindly ignore the message.`
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return res.send('Error sending email');
+    }
+    res.render('verify');
+  });
+});
+
+// Handle OTP verification
+app.post('/verify-otp', (req, res) => {
+  const email = req.params.email;
+  const userOtp = req.body.otp;
+  if (parseInt(userOtp) === req.session.otp) {
+    // res.send(`✅ Registration successful for ${req.session.email}`);
+    setTimeout(() => {
+    res.redirect('/buyandsell/signup/'+req.session.email);}, 2000);
+  } else {
+    res.send('❌ Invalid OTP. Try again.');
+  }
+});
+
+app.get("/buyandsell/signup_gmail", (req,res)=>{
+  res.render("signup_gmail.ejs", {activePage:" "});
+});
+
+app.get("/buyandsell/signup/:email", (req,res)=>{
+  res.render("signup.ejs", {activePage:" ", email:req.params.email});
 })
 app.post("/buyandsell/signup", upload.single('profileImage'), (req,res)=>{
   let {fname, femail, fpassword, frole, fphone, faddress, fpincode, fstate, fcity, fgender}= req.body;
@@ -190,7 +252,7 @@ user.save().then((result)=>{
   });
   notification.save().then((r)=>{res.redirect("/buyandsell/home/"+result._id)})}).catch((e)=>{res.send(e.errmsg);console.log(e)})
   
-  .catch((error)=>{console.log(error); res.send(error)})
+  .catch((error)=>{console.log(error); res.send(error);})
 })
 
 //merchantPages:
