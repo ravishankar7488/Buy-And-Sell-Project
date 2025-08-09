@@ -50,10 +50,10 @@
 
             <div class="float-nav">
             <%if(user.isRead){%>
-            <a class="nav-link <%= (activePage === 'notifications') ? 'active' : '' %>" href="/buyandsell/customer/getnotification/<%=user._id%>"><img style="position:relative; bottom:2px; margin-right: 14px; width: 40px; height: 40px;" src="https://banner2.cleanpng.com/20231206/oju/transparent-red-bell-black-surface-round-shape-open-hole-smoot-red-bell-with-open-hole-smooth-surface-1710985163124.webp"></a>
+            <a class="nav-link " href="/buyandsell/customer/getnotification/<%=user._id%>"><img style="position:relative; bottom:2px; margin-right: 14px; width: 40px; height: 40px;" src="https://banner2.cleanpng.com/20231206/oju/transparent-red-bell-black-surface-round-shape-open-hole-smoot-red-bell-with-open-hole-smooth-surface-1710985163124.webp"></a>
             <%}%>
             <%if(!(user.isRead)){%>
-            <a class="nav-link <%= (activePage === 'notifications') ? 'active' : '' %>" href="/buyandsell/customer/getnotification/<%=user._id%>"><img style="position:relative; bottom:10px; margin-right:10px; width: 50px; height: 50px;" src="https://png.pngtree.com/png-clipart/20220909/original/pngtree-red-ring-bell-notification-icon-png-image_8516685.png"></a>
+            <a class="nav-link " href="/buyandsell/customer/getnotification/<%=user._id%>"><img style="position:relative; bottom:10px; margin-right:10px; width: 50px; height: 50px;" src="https://png.pngtree.com/png-clipart/20220909/original/pngtree-red-ring-bell-notification-icon-png-image_8516685.png"></a>
             <%}%>
             <!-- <a class="nav-link" href="/buyandsell"><i class="fa-solid fa-right-from-bracket icons"></i></a> -->
             <a class="nav-link <%= (activePage === 'account') ? 'active' : '' %>" href="/buyandsell/user/<%=user._id%>"><img style="margin-top: 0px; height: 35px; width: 35px; border-radius: 200px;" src="<%=user.profileImage%>"></a>

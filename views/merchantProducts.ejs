@@ -8,8 +8,8 @@
     <div class="card" style="width: 18rem;">
   <img src="<%=product.imageurl%>" class="card-img-top" alt="Product Image">
   <div style="background-color: aliceblue;" class="card-body">
-    <h6 class="card-title"><%=product.brand%></h6>
-    <p style="line-height: 14px;"><%=product.title%></p>
+    <h6 class="card-title"><%=product.brand%> | <%=product.purchase%></h6>
+    <p style="line-height: 14px;"><%=product.title%> | Stock Remains: <%=product.stock%></p>
 <p style="line-height: 14px;" class="card-text"><span><strong>₹ <%=(product.priceafterdiscount).toLocaleString("en-IN")%></strong></span> &nbsp; &nbsp;<span style="text-decoration: line-through; color: grey;">₹ <%=product.price.toLocaleString("en-IN")%></span></p>    <p><i><%=product.tags%></i></p>
     <a href="/buyandsell/user/viewproduct/<%=product._id%>/<%=user._id%>" class="btn btn-primary">View Product</a>
     <a href="/buyandsell/merchant/edit/<%=product._id%>/<%=user._id%>" class="btn btn-primary">Edit</a>

@@ -1,13 +1,15 @@
 <% layout("../layouts/boilerplate")%>
-<body>
-  <h3>Edit your product</h3><hr><br>
-  <form method="POST" action="/buyandsell/merchant/edit/<%=product._id%>/<%=user._id%>">
-    <!-- <textarea name="pname"><%=product.title%></textarea> -->
-    <!-- <textarea name="pdesc"><%=product.description%></textarea> -->
-    <!-- <textarea name="pimage"><%=product.imageurl%></textarea> -->
+<body><br><br>
+  <h3 style="text-align: center;">Edit your product</h3><hr><br>
+  <div style="text-align: center;">
+    <form method="POST" action="/buyandsell/merchant/edit/<%=product._id%>/<%=user._id%>">
+     <p><strong>Stock</strong></p>
     <textarea name="pstock"><%=product.stock%></textarea>
-    <textarea name="pprice"><%=product.price.toLocaleString("en-IN")%></textarea>
+    <p><strong>Price</strong></p>
+    <textarea name="pprice"><%=product.price%></textarea>
+    <p><strong>Tags and keys</strong></p>
     <textarea name="ptags"><%=product.tags%></textarea>
     <button>Save</button>
   </form>
+  </div>
 </body>

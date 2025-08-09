@@ -63,7 +63,8 @@ app.set("view engine", "ejs");
 
 //routes
 app.get("/", (req,res)=>{
-  Product.find({}).then((products)=>{res.render("homepage.ejs", {products , activePage:"Home"})}).catch((error)=>{console.log(error)})
+  Product.find({}).then((products)=>{res.render("homepage.ejs", {products , activePage:"Home", alertMessage: 'Welcome back!' }
+  )}).catch((error)=>{console.log(error)})
   
 })
 //My account
@@ -217,7 +218,7 @@ app.post('/verify-otp', (req, res) => {
   if (parseInt(userOtp) === req.session.otp) {
     // res.send(`✅ Registration successful for ${req.session.email}`);
     setTimeout(() => {
-    res.redirect('/buyandsell/signup/'+req.session.email);}, 2000);
+    res.redirect('/buyandsell/signup/'+req.session.email);}, 1000);
   } else {
     res.send('❌ Invalid OTP. Try again.');
   }
@@ -228,7 +229,7 @@ app.get("/buyandsell/signup_gmail", (req,res)=>{
 });
 
 app.get("/buyandsell/signup/:email", (req,res)=>{
-  res.render("signup.ejs", {activePage:" ", email:req.params.email});
+  res.render("signup.ejs", {activePage:" ", email:req.params.email, alertMessage: 'Email verified! Please fill in the details to complete your registration.'});
 })
 app.post("/buyandsell/signup", upload.single('profileImage'), (req,res)=>{
   let {fname, femail, fpassword, frole, fphone, faddress, fpincode, fstate, fcity, fgender}= req.body;

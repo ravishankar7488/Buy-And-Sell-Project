@@ -4,7 +4,7 @@
     <%products.forEach((product)=>{%>
     <div class="card" style="width: 18rem; margin: 5px; margin-bottom: 25px;">
   <img src="<%=product.imageurl%>" class="card-img-top" alt="Product Image">
-  <div class="card-body">
+  <div class="card-body" style="background-color: aliceblue;">
 <h6 class="card-title"><span><%=product.brand%></span>&nbsp; |&nbsp; <%=product.purchase %></h6>
     <p class="card-title"><%=product.title%></p>
     <p class="card-text"><span><strong>₹ <%=(product.priceafterdiscount).toLocaleString("en-IN")%></strong></span> &nbsp; &nbsp;<span style="text-decoration: line-through; color: grey;">₹ <%=product.price.toLocaleString("en-IN")%></span></p>
