@@ -20,6 +20,7 @@
             <li class="list-group-item">Status: <span style=<%if(order.status==='Delivered'){%> "color:green;"<%}%>
               <%if(order.status==='Canceled By Customer'){%> "color:grey;"<%}%>
               <%if(order.status==='Rejected'){%> "color:red;"<%}%>><b><%=order.status%></b></span></li>
+            <%if(order.status==='Canceled By Customer'){%><li class="list-group-item"><b>Reason of cancellation:</b> <%=order.cancel_reason%></li><%}%>
             <li class="list-group-item"><%=order.createdAt%></li>
           </ul>
           <div class="card-body">

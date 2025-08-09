@@ -11,6 +11,7 @@ const orderSchema=new Schema({
   ordertitle: {type: String},
   orderimage: {type: String},
   status: {type: String, enum: ['Packed', 'Shipped', 'Confirmed', 'Delivered', 'Rejected', 'Order Placed', 'Canceled By Customer'], default: 'Order Placed'},
+  cancel_reason: {type: String, default: 'Reason not provided'},
 });
 const Order=mongoose.model("Order", orderSchema);
 module.exports=Order;

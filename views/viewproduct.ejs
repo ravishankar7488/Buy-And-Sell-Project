@@ -1,6 +1,6 @@
 <% layout("../layouts/boilerplate")%>
 <body>
-  <div class="card" style="width: 25rem;">
+  <div class="card" style="width: 25rem; margin: auto;">
     <img src="<%=product.imageurl%>" class="card-img-top" alt="Product Image">
     <div class="card-body">
     <h5 class="card-title"><%=product.brand%></h5>
@@ -13,18 +13,18 @@
 
     <% if (user.role === 'customer') { %>
       <% if (product.stock<1) { %>
-        <a href="#" class="btn btn-primary" style="pointer-events: none; text-decoration: line-through; opacity: 0.6;  ">Out of Stock</a>
+        <a href="#" class="btn btn-danger" style="pointer-events: none; text-decoration: line-through; opacity: 0.6;  ">Out of Stock</a>
       <% } %>
       <% if (product.stock>0) { %>
       <!-- <a href="/buyandsell/customer/buy/<%=product._id%>/<%=user._id%>" class="btn btn-primary">Buy</a> -->
-      <a href="/buyandsell/customer/confirmation/buy/<%=product._id%>/<%=user._id%>" class="btn btn-primary">Buy</a>
+      <a href="/buyandsell/customer/confirmation/buy/<%=product._id%>/<%=user._id%>" class="btn btn-info">Buy</a>
       <% } %>
-      <a href="/buyandsell/customer/addtocart/<%=product._id%>/<%=user._id%>" class="btn btn-primary">Add To Cart</a>
+      <a href="/buyandsell/customer/addtocart/<%=product._id%>/<%=user._id%>" class="btn btn-warning">Add To Cart</a>
     <% } %>
 
      <% if (user.role === 'merchant') { %>
-      <a href="#" class="btn btn-primary" style="pointer-events: none; text-decoration: line-through; opacity: 0.6;  ">Buy</a>
-      <a href="#" class="btn btn-primary" style="pointer-events: none; text-decoration: line-through; opacity: 0.6;">Add To Cart</a>
+      <a href="#" class="btn btn-success" style="pointer-events: none; text-decoration: line-through; opacity: 0.6;  ">Buy</a>
+      <a href="#" class="btn btn-warning" style="pointer-events: none; text-decoration: line-through; opacity: 0.6;">Add To Cart</a>
     <% } %>
     
   </div>

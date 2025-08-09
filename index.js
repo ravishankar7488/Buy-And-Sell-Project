@@ -333,7 +333,33 @@ app.post("/buyandsell/merchant/vieworder/updatestatus/:uid/:oid/:cid", (req,res)
       })
       .catch((e)=>{console.log(e)})
     }).catch((error1)=>{console.log(error1)})
-    
+//notification for customer on mail
+User.findById(cid).then((customer)=>{
+const email = customer.email;
+  const otp = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+
+  req.session.email = email;
+  req.session.otp = otp;
+
+  const mailOptions = {
+    from: 'buyandsell7488@gmail.com',
+    to: email,
+    subject: 'Order status update',
+    text: `Greetings Customer,
+The status of your order "${result.ordertitle}" has been updated as "${status}". To view the order details and manage it, please click the link https://buy-and-sell-project.onrender.com/ to visit our website.
+Warm regards,
+The B&S Team"
+`
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return res.send('Error sending email');
+    }
+  });
+
+}).catch((e)=>{console.log(e)})//notification for customer on mail
+
   }).catch((error)=>{console.log(error)})
 })
 //my listed products
@@ -399,7 +425,63 @@ app.get("/buyandsell/customer/buy/:pid/:uid", (req,res)=>{
         receiverId:product.sellerId,
         message:`You have an order for your product ${product.title}, Stock remains: ${product.stock-1}. Check your New orders section for more details.`
       })
-      notification.save().then((r)=>{User.findByIdAndUpdate(product.sellerId, {isRead:false}).then((r)=>{}).catch((e)=>{})})
+      notification.save().then((r)=>{User.findByIdAndUpdate(product.sellerId, {isRead:false}).then((r)=>{
+//notifications
+// merchant
+User.findById(product.sellerId).then((seller)=>{
+    const email = seller.email;
+  const otp = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+
+  req.session.email = email;
+  req.session.otp = otp;
+
+  const mailOptions = {
+    from: 'buyandsell7488@gmail.com',
+    to: email,
+    subject: 'Order for your product',
+    text: `Greetings Merchant,
+You’ve received a new order for your product: ${product.title}. To view the order details and manage it, please click the link https://buy-and-sell-project.onrender.com/ to visit our website.
+Warm regards,
+The B&S Team"
+`
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return res.send('Error sending email');
+    }
+  });
+  //customer
+  User.findById(uid).then((customer)=>{
+        const cemail = customer.email;
+  const otp = Math.floor(100000 + Math.random() * 900000); // 6-digit OTP
+
+  req.session.email = email;
+  req.session.otp = otp;
+
+  const mailOptions = {
+    from: 'buyandsell7488@gmail.com',
+    to: cemail,
+    subject: 'Order Confirmation',
+    text: `Greetings Customer,
+Your order for product: ${product.title} has been placed. To view the order details and manage it, please click the link https://buy-and-sell-project.onrender.com/ to visit our website.
+Warm regards,
+The B&S Team"
+`
+  };
+   transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      return res.send('Error sending email');
+    }
+  });
+
+
+
+  }).catch((e)=>{})
+}).catch((e)=>{})
+//notifications
+        
+      }).catch((e)=>{})})
       .catch((e)=>{})
     }).catch((error)=>{console.log(error)})
       let order= new Order({
@@ -451,9 +533,22 @@ app.get("/buyandsell/user/deletecart/:pid/:uid", (req,res)=>{
 })
 
 //cancel order:
-app.get("/buyandsell/user/cancelorder/:pid/:uid", (req,res)=>{
+app.get("/buyandsell/user/cancelorder_request/:pid/:uid", (req,res)=>{
   let {pid, uid}=req.params;
-  Order.findByIdAndUpdate(pid, {status: "Canceled By Customer"}).then((result)=>{
+  Order.findOne({_id : pid}).then((order)=>{
+    console.log(order);
+     res.render("cancelorder.ejs", {pid, uid, activePage:" ", order}
+
+     );}).catch((error)=>{console.log(error)})
+
+ 
+})
+app.post("/buyandsell/user/cancelorder/:pid/:uid", (req,res)=>{
+  let cancelReason=req.body.cancel_reason;
+  if(!cancelReason) return res.send("Please provide a reason for cancellation");
+
+  let {pid, uid}=req.params;
+  Order.findByIdAndUpdate(pid, {status: "Canceled By Customer", cancel_reason: cancelReason}).then((result)=>{
     Order.findById(pid).then((order)=>{
       prodId=order.productId;
       Product.findById(prodId).then((product)=>{
@@ -462,7 +557,7 @@ app.get("/buyandsell/user/cancelorder/:pid/:uid", (req,res)=>{
         let notification= new Notification({
           senderId:uid,
           receiverId: product.sellerId,
-          message: `Order for your product "${order.ordertitle}" has been canceled by Customer`
+          message: `Order for your product "${order.ordertitle}" has been canceled by Customer with reason: "${cancelReason}`
         })
         notification.save().then((r)=>{
           User.findByIdAndUpdate(product.sellerId, {isRead: false}).then((u)=>{
