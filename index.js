@@ -15,8 +15,8 @@ app.use(session({ secret: 'otp_secret', resave: false, saveUninitialized: true }
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'buyandsell7488@gmail.com',
-    pass: 'dfun dmeh qnnj tgog'
+    user: 'pravi5653no0987@gmail.com',
+    pass: 'ryhn zvbp tyja vkec'
   }
 });
 
@@ -194,7 +194,7 @@ app.post('/send-otp', (req, res) => {
   req.session.otp = otp;
 
   const mailOptions = {
-    from: 'buyandsell7488@gmail.com',
+    from: 'pravi5653no0987@gmail.com',
     to: email,
     subject: 'Verification OTP for B&S',
     text: `Thank you for choosing Buy and Sell!
@@ -205,7 +205,7 @@ If you didn’t request this, kindly ignore the message.`
 
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
-      return res.send('Error sending email');
+      return res.send(error);
     }
     res.render('verify');
   });
@@ -342,7 +342,7 @@ const email = customer.email;
   req.session.otp = otp;
 
   const mailOptions = {
-    from: 'buyandsell7488@gmail.com',
+    from: 'pravi5653no0987@gmail.com',
     to: email,
     subject: 'Order status update',
     text: `Greetings Customer,
@@ -436,7 +436,7 @@ User.findById(product.sellerId).then((seller)=>{
   req.session.otp = otp;
 
   const mailOptions = {
-    from: 'buyandsell7488@gmail.com',
+    from: 'pravi5653no0987@gmail.com',
     to: email,
     subject: 'Order for your product',
     text: `Greetings Merchant,
@@ -460,7 +460,7 @@ The B&S Team"
   req.session.otp = otp;
 
   const mailOptions = {
-    from: 'buyandsell7488@gmail.com',
+    from: 'pravi5653no0987@gmail.com',
     to: cemail,
     subject: 'Order Confirmation',
     text: `Greetings Customer,
@@ -596,7 +596,8 @@ res.render("search.ejs",{user, products, searchedProduct, activePage:searchedPro
 //forgot password
 app.get("/buyandsell/password_recovery", (req,res)=>{
   res.render("password_recovery.ejs", {activePage:" "});})
-app.post("/buyandsell/password_recovery", (req,res)=>{
+
+  app.post("/buyandsell/password_recovery", (req,res)=>{
 
   let {femail,fpassword,pname}=req.body;
   User.findOne({email:femail}).then((user)=>{
